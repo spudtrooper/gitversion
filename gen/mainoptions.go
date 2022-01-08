@@ -1,11 +1,12 @@
-package gitversion
+package gen
 
-// genopts --opt_type=MainOption --prefix=Main --outfile=gitversion/mainoptions.go 'tag:string'
+// genopts --opt_type=MainOption --prefix=Main --outfile=gen/mainoptions.go 'tag:string' 'incTag:bool'
 
 type MainOption func(*mainOptionImpl)
 
 type MainOptions interface {
 	Tag() string
+	IncTag() bool
 }
 
 func MainTag(tag string) MainOption {
@@ -14,11 +15,19 @@ func MainTag(tag string) MainOption {
 	}
 }
 
-type mainOptionImpl struct {
-	tag string
+func MainIncTag(incTag bool) MainOption {
+	return func(opts *mainOptionImpl) {
+		opts.incTag = incTag
+	}
 }
 
-func (m *mainOptionImpl) Tag() string { return m.tag }
+type mainOptionImpl struct {
+	tag    string
+	incTag bool
+}
+
+func (m *mainOptionImpl) Tag() string  { return m.tag }
+func (m *mainOptionImpl) IncTag() bool { return m.incTag }
 
 func makeMainOptionImpl(opts ...MainOption) *mainOptionImpl {
 	res := &mainOptionImpl{}
