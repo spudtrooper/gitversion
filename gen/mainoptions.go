@@ -1,12 +1,13 @@
 package gen
 
-// genopts --opt_type=MainOption --prefix=Main --outfile=gen/mainoptions.go 'tag:string' 'incTag:bool'
+// genopts --opt_type=MainOption --prefix=Main --outfile=gen/mainoptions.go 'tag:string' 'incTag:bool' 'verbose'
 
 type MainOption func(*mainOptionImpl)
 
 type MainOptions interface {
 	Tag() string
 	IncTag() bool
+	Verbose() bool
 }
 
 func MainTag(tag string) MainOption {
@@ -21,13 +22,21 @@ func MainIncTag(incTag bool) MainOption {
 	}
 }
 
-type mainOptionImpl struct {
-	tag    string
-	incTag bool
+func MainVerbose(verbose bool) MainOption {
+	return func(opts *mainOptionImpl) {
+		opts.verbose = verbose
+	}
 }
 
-func (m *mainOptionImpl) Tag() string  { return m.tag }
-func (m *mainOptionImpl) IncTag() bool { return m.incTag }
+type mainOptionImpl struct {
+	tag     string
+	incTag  bool
+	verbose bool
+}
+
+func (m *mainOptionImpl) Tag() string   { return m.tag }
+func (m *mainOptionImpl) IncTag() bool  { return m.incTag }
+func (m *mainOptionImpl) Verbose() bool { return m.verbose }
 
 func makeMainOptionImpl(opts ...MainOption) *mainOptionImpl {
 	res := &mainOptionImpl{}

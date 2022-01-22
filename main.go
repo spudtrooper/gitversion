@@ -14,13 +14,14 @@ var (
 	versionFlag = flag.String("version_flag", "version", "the version flag that is generated")
 	tag         = flag.String("tag", "", "the new tag")
 	inc         = flag.Bool("inc", false, "simple increment the current tag, e.g. v0.0.1 -> v0.0.2")
+	verbose     = flag.Bool("verbose", false, "print verbose logging")
 )
 
 func realMain() error {
 	if gitversion.CheckVersionFlag() {
 		return nil
 	}
-	if err := gen.Main(*updateDir, *pkg, *versionFlag, gen.MainTag(*tag), gen.MainIncTag(*inc)); err != nil {
+	if err := gen.Main(*updateDir, *pkg, *versionFlag, gen.MainTag(*tag), gen.MainIncTag(*inc), gen.MainVerbose(*verbose)); err != nil {
 		return err
 	}
 	return nil
