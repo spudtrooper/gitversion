@@ -1,6 +1,6 @@
 package gen
 
-// genopts --opt_type=MainOption --prefix=Main --outfile=gen/mainoptions.go 'tag:string' 'incTag:bool' 'verbose'
+//go:generate genopts --opt_type=MainOption --prefix=Main --outfile=mainoptions.go "tag:string" "incTag:bool" "verbose"
 
 type MainOption func(*mainOptionImpl)
 
