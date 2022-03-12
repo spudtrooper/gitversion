@@ -1,6 +1,6 @@
 package gen
 
-//go:generate genopts --opt_type=MainOption --prefix=Main --outfile=mainoptions.go "tag:string" "incTag:bool" "verbose"
+//go:generate genopts --prefix=Main --outfile=gen/mainoptions.go "tag:string" "incTag:bool" "verbose"
 
 type MainOption func(*mainOptionImpl)
 
@@ -15,16 +15,31 @@ func MainTag(tag string) MainOption {
 		opts.tag = tag
 	}
 }
+func MainTagFlag(tag *string) MainOption {
+	return func(opts *mainOptionImpl) {
+		opts.tag = *tag
+	}
+}
 
 func MainIncTag(incTag bool) MainOption {
 	return func(opts *mainOptionImpl) {
 		opts.incTag = incTag
 	}
 }
+func MainIncTagFlag(incTag *bool) MainOption {
+	return func(opts *mainOptionImpl) {
+		opts.incTag = *incTag
+	}
+}
 
 func MainVerbose(verbose bool) MainOption {
 	return func(opts *mainOptionImpl) {
 		opts.verbose = verbose
+	}
+}
+func MainVerboseFlag(verbose *bool) MainOption {
+	return func(opts *mainOptionImpl) {
+		opts.verbose = *verbose
 	}
 }
 
